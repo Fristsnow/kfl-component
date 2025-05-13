@@ -1,0 +1,103 @@
+@use 'mixins/mixins.scss' as *;
+
+@include b(checkbox) {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  margin-right: 30px;
+  
+  @include e(input) {
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    position: relative;
+    
+    @include e(original) {
+      opacity: 0;
+      outline: none;
+      position: absolute;
+      margin: 0;
+      width: 0;
+      height: 0;
+      z-index: -1;
+    }
+    
+    @include e(inner) {
+      display: inline-block;
+      position: relative;
+      border: 1px solid #dcdfe6;
+      border-radius: 2px;
+      box-sizing: border-box;
+      width: 14px;
+      height: 14px;
+      background-color: #fff;
+      transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),
+                background-color .25s cubic-bezier(.71,-.46,.29,1.46);
+      
+      &:after {
+        box-sizing: content-box;
+        content: "";
+        border: 1px solid #fff;
+        border-left: 0;
+        border-top: 0;
+        height: 7px;
+        left: 4px;
+        position: absolute;
+        top: 1px;
+        transform: rotate(45deg) scaleY(0);
+        width: 3px;
+        transition: transform .15s ease-in .05s;
+        transform-origin: center;
+      }
+    }
+  }
+  
+  @include e(label) {
+    padding-left: 8px;
+    line-height: 1;
+  }
+  
+  &.is-checked {
+    .#{$namespace}-checkbox__input {
+      .#{$namespace}-checkbox__inner {
+        background-color: #409eff;
+        border-color: #409eff;
+        
+        &:after {
+          transform: rotate(45deg) scaleY(1);
+        }
+      }
+    }
+  }
+  
+  &.is-disabled {
+    cursor: not-allowed;
+    
+    .#{$namespace}-checkbox__input {
+      cursor: not-allowed;
+      
+      .#{$namespace}-checkbox__inner {
+        background-color: #edf2fc;
+        border-color: #dcdfe6;
+      }
+    }
+    
+    &.is-checked {
+      .#{$namespace}-checkbox__input {
+        .#{$namespace}-checkbox__inner {
+          background-color: #f2f6fc;
+          border-color: #dcdfe6;
+        }
+      }
+    }
+    
+    .#{$namespace}-checkbox__label {
+      color: #c0c4cc;
+      cursor: not-allowed;
+    }
+  }
+}
