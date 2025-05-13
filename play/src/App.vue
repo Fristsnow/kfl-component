@@ -2,7 +2,7 @@
  * @Author: FirstsnowLucky firstsnow1119@163.com
  * @Date: 2025-04-16 12:08:26
  * @LastEditors: FirstsnowLucky firstsnow1119@163.com
- * @LastEditTime: 2025-04-17 16:25:42
+ * @LastEditTime: 2025-05-13 14:23:30
  * @FilePath: \kfl-component\play\src\App.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -201,10 +201,10 @@ const htmlCode = ref(`
       @node-click="handleNodeClick"
     ></kfl-tree> -->
   <!-- <kfl-checkbox v-model="checked" @change="handleCheckChange">全选</kfl-checkbox> -->
-  <kfl-html-preview :html-code="htmlCode" :scale="10" />
+  <!-- <kfl-html-preview :html-code="htmlCode" :scale="10" />
   <input
     v-model="htmlCode"
-  />
+  /> -->
 </template>
 
 <style scoped></style>
