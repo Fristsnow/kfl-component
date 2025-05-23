@@ -15,33 +15,55 @@ export interface PageConfig {
 export interface AutoRouterOptions {
   base?: string
   debug?: boolean
-  isTs?: boolean
+  mode?: 'ts' | 'js' | 'auto' // 手动指定类型或自动推断
 }
 
 /**
- * 创建自动路由（根据项目语言自动选择扫描后缀）
+ * 创建自动路由（支持 .ts/.js 自动检测）
  */
 export function createAutoRouter(options: AutoRouterOptions = {}): Router {
-  const { base = '/', debug = true, isTs = true } = options;
+  const {
+    base = '/',
+    debug = true,
+    mode = 'auto'
+  } = options
 
-  const pages = isTs
-      ? import.meta.glob<PageConfig>('/src/views/**/page.ts', { eager: true, import: 'default' })
-      : import.meta.glob<PageConfig>('/src/views/**/page.js', { eager: true, import: 'default' });
+  // 两套 page.ts / page.js 配置
+  const pagesTs = import.meta.glob<PageConfig>('/src/views/**/page.ts', {
+    eager: true,
+    import: 'default'
+  })
 
-  // 组件导入不变
-  const components = import.meta.glob('/src/views/**/index.vue');
+  const pagesJs = import.meta.glob<PageConfig>('/src/views/**/page.js', {
+    eager: true,
+    import: 'default'
+  })
+
+  // 两套组件
+  const components = import.meta.glob('/src/views/**/index.vue')
+
+  let pages: Record<string, PageConfig> = {}
+  if (mode === 'ts') {
+    pages = pagesTs
+  } else if (mode === 'js') {
+    pages = pagesJs
+  } else {
+    pages = Object.keys(pagesTs).length > 0 ? pagesTs : pagesJs
+  }
 
   const normalizePath = (path: string): string => {
-    return path.replace('/src/views', '').replace(isTs ? '/page.ts' : '/page.js', '') || '/'
+    return path.replace('/src/views', '').replace(/\/page\.(ts|js)$/, '') || '/'
   }
+
   const getRouteName = (path: string): string => {
     return path.split('/').filter(Boolean).join('-') || 'index'
   }
 
   const routeMap: Record<string, RouteRecordRaw> = {}
 
+  // 主路由
   for (const [pagePath, config] of Object.entries(pages)) {
-    const compPath = pagePath.replace(isTs ? 'page.ts' : 'page.js', 'index.vue')
+    const compPath = pagePath.replace(/page\.(ts|js)$/, 'index.vue')
     const routePath = normalizePath(pagePath)
     const name = getRouteName(routePath)
 
@@ -54,14 +76,16 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
     }
   }
 
+  // 子路由
   for (const [pagePath, config] of Object.entries(pages)) {
     const routePath = normalizePath(pagePath)
     if (config?.children) {
       config.children.forEach(child => {
         const fullChildPath = `${routePath}/${child.path}`
         const childCompPath = `/src/views${fullChildPath}/index.vue`
-        const childPagePath = `/src/views${fullChildPath}/${isTs ? 'page.ts' : 'page.js'}`
-        const childConfig = pages[childPagePath] || {}
+        const childPagePathTs = `/src/views${fullChildPath}/page.ts`
+        const childPagePathJs = `/src/views${fullChildPath}/page.js`
+        const childConfig = pages[childPagePathTs] || pages[childPagePathJs] || {}
 
         routeMap[routePath].children?.push({
           path: child.path,
@@ -76,7 +100,7 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
   const routes = Object.values(routeMap)
 
   if (debug) {
-    console.log(routes, '自动生成的路由')
+    console.log('自动生成的路由:', routes)
   }
 
   return createRouter({
