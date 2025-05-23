@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { createNamespace } from '@kfl-vue/utils/create'
+import { createNamespace } from '@kfl-ui/utils/create'
 import { treeProps, treeEmits } from './tree'
 import type { TreeNode, TreeNodeData } from './tree'
 import TreeNodeComponent from './tree-node.vue'

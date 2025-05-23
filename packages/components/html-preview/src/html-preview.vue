@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { createNamespace } from '@kfl-vue/utils/create'
+import { createNamespace } from '@kfl-ui/utils/create'
 import { ref, computed } from 'vue'
 
 defineOptions({ name: 'kfl-html-preview' })

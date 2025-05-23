@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue'
-import { createNamespace } from '@kfl-vue/utils/create'
+import { createNamespace } from '@kfl-ui/utils/create'
 import type { TreeNode } from './tree'
 
 const bem = createNamespace('tree')

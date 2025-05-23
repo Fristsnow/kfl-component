@@ -1,3 +1,11 @@
+<!--
+ * @Author: FirstsnowLucky firstsnow1119@163.com
+ * @Date: 2025-04-16 16:48:10
+ * @LastEditors: FirstsnowLucky firstsnow1119@163.com
+ * @LastEditTime: 2025-05-23 11:17:26
+ * @FilePath: \kfl-component\packages\components\checkbox\src\checkbox.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
   <label
     :class="[
@@ -39,7 +47,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { createNamespace } from '@kfl-vue/utils/create'
+import { createNamespace } from '@kfl-ui/utils/create'
 import type { CheckboxProps } from './checkbox'
 import { checkboxEmits } from './checkbox'
 

@@ -1,5 +1,5 @@
 import _Icon from './src/icon.vue';
-import { withInstall } from '@kfl-vue/utils/with-install';
+import { withInstall } from '@kfl-ui/utils/with-install';
 
 const Icon = withInstall(_Icon);
 

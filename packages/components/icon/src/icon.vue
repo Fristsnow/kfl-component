@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { createNamespace } from '@kfl-vue/utils/create';
+import { createNamespace } from '@kfl-ui/utils/create';
 import { iconProps } from './icon';
 
 defineOptions({ name: "kfl-icon" })

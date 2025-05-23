@@ -8,7 +8,7 @@
  */
 import _Tree from './src/tree.vue'
 
-import { withInstall } from '@kfl-vue/utils/with-install';
+import { withInstall } from '@kfl-ui/utils/with-install';
 
 const Tree = withInstall(_Tree);
 
