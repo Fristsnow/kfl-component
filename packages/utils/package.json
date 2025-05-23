@@ -1,5 +1,5 @@
 {
-  "name": "@kfl-vue/utils",
+  "name": "@kfl-ui/utils",
   "version": "1.0.0",
   "description": "Vue 工具集合，包含自动路由生成器",
   "main": "index.ts",
