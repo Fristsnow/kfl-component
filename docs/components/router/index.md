@@ -1,164 +1,167 @@
-# 📦 kfl-router - Vue 自动路由生成工具
+# createRouterFromGlobs
 
-`kfl-router` 是一个专为 Vue 3 + Vite 项目打造的自动路由生成组件工具，基于目录结构和 `page.ts` 文件自动构建符合约定式的路由配置。
+## 简介
 
----
-
-## ✨ 功能特性
-
-* 📁 基于 `/src/views/**` 目录自动生成路由配置
-* ⚙️ 支持父子路由结构定义（通过 `page.ts` 中的 `children` 字段）
-* 🚀 零配置使用，只需在 `main.ts` 中引入即可
-* ✅ 使用 TypeScript 编写，类型安全
-* 🧠 默认启用调试日志，便于开发中查看自动路由结构
+`createRouterFromGlobs` 是一个基于 Vue Router 4 的自动化路由生成工具，适用于使用 Vite + Vue 3 构建的项目，借助 `import.meta.glob` 自动解析页面结构并生成标准路由配置，支持嵌套路由、重定向、自定义元信息等特性。
 
 ---
 
-## 📦 安装
+## 安装
 
 ```bash
-pnpm add kfl-ui
+npm install @kfl-ui/utils
 # 或者
-npm install kfl-ui
-# 或者
-yarn add kfl-ui
+pnpm add @kfl-ui/utils
 ```
 
 ---
 
-## 🛠️ 使用方式
+## 目录规范
 
-### 1. 创建页面结构
+项目页面结构需遵循如下约定：
 
-```bash
+```
 src/
-└─ views/
-   └─ dashboard/
-      ├─ page.ts
-      └─ index.vue
+└── views/
+    ├── home/
+    │   ├── page.ts       # 页面配置
+    │   └── index.vue     # 页面组件
+    └── user/
+        ├── page.ts
+        ├── index.vue
+        └── profile/
+            ├── page.ts
+            └── index.vue
 ```
 
-### 2. 在 `page.ts` 中定义元信息（可选）
+---
+
+## 页面配置（page.ts）
 
 ```ts
-// src/views/dashboard/page.ts
+// /src/views/user/page.ts
 export default {
-  title: '控制台',
   meta: {
+    title: '用户中心',
     requiresAuth: true
   },
+  redirect: '/user/profile',
   children: [
-    {
-      path: 'stats',
-      name: 'dashboard-stats',
-      meta: { title: '统计信息' }
-    }
+    { path: 'profile', name: 'user-profile', meta: { title: '个人资料' } },
+    { path: 'settings', name: 'user-settings', meta: { title: '设置' } }
   ]
 }
 ```
 
-### 3. 在 `main.ts` 中引入自动路由
+---
+
+## 快速开始
+
+### 导入页面配置与组件
+
+```ts
+const pages = import.meta.glob('/src/views/**/page.ts', {
+  eager: true,
+  import: 'default'
+}) as Record<string, PageConfig>
+
+const components = import.meta.glob('/src/views/**/index.vue')
+```
+
+### 创建路由对象
+
+```ts
+import { createRouterFromGlobs } from '@kfl-ui/utils'
+
+const router = createRouterFromGlobs(pages, components)
+```
+
+### 注册到 Vue 应用中
 
 ```ts
 import { createApp } from 'vue'
 import App from './App.vue'
-import { createAutoRouter } from 'kfl-router'
 
-const app = createApp(App)
-
-// 自动注册路由
-const router = createAutoRouter({
-  base: '/', // 可选，设置基础路径
-  debug: import.meta.env.DEV // 可选，仅开发环境下输出路由信息
-})
-
-app.use(router)
-app.mount('#app')
+createApp(App).use(router).mount('#app')
 ```
 
 ---
 
-## 📁 自动扫描规则说明
+## 路由配置扩展
 
-* 自动扫描路径：`/src/views/**/page.ts`
-* 同级必须存在：`index.vue` 组件
-* 子路由：通过 `page.ts` 的 `children` 字段声明，路径自动拼接
-
----
-
-## 🧩 高级配置（可选）
-
-```ts
-createAutoRouter({
-  base: '/app/', // 修改路由基础路径
-  debug: false   // 关闭控制台输出
-})
-```
+* 父路由可配置 `meta`、`redirect`。
+* 子路由支持 `name`、`meta` 配置。
+* 支持嵌套路由，自动根据目录结构生成层级。
 
 ---
 
-## 🧪 示例生成路由结构
-
-若目录如下：
-
-```
-/views
-└─ user/
-   ├─ page.ts
-   └─ index.vue
-└─ user/profile/
-   ├─ page.ts
-   └─ index.vue
-```
-
-自动生成结果类似：
-
-```ts
-[
-  {
-    path: '/user',
-    name: 'user',
-    component: () => import('/src/views/user/index.vue'),
-    meta: { ... },
-    children: [
-      {
-        path: 'profile',
-        name: 'user-profile',
-        component: () => import('/src/views/user/profile/index.vue'),
-        meta: { ... }
-      }
-    ]
-  }
-]
-```
-
----
-
-## 📜 类型定义参考
+## PageConfig 类型定义
 
 ```ts
 export interface PageConfig {
-  title?: string;
-  icon?: string;
-  meta?: RouteMeta;
+  title?: string
+  icon?: string
+  meta?: Record<string, any>
+  redirect?: string
+  requiresAuth?: boolean
   children?: {
-    path: string;
-    name: string;
-    meta?: RouteMeta;
-  }[];
+    path: string
+    name: string
+    meta?: Record<string, any>
+  }[]
 }
 ```
 
 ---
 
-## 🧼 注意事项
+## 示例效果
 
-* 所有路径必须是 `/src/views/` 开头（vite 限制）
-* `page.ts` 必须是默认导出对象
-* 每个 `index.vue` 必须存在，否则路由生成失败
+访问 `/user` 自动重定向到 `/user/profile`，并渲染 `user/index.vue` 作为父组件，同时 `user/profile/index.vue` 作为子路由内容显示。
+
+确保你的父组件内使用 `<RouterView />` 占位符：
+
+```vue
+<!-- user/index.vue -->
+<template>
+  <div>
+    <h1>用户中心</h1>
+    <RouterView />
+  </div>
+</template>
+```
 
 ---
 
-## 📄 License
+## 注意事项
 
-MIT License © 2025-present FirstSnow
+* 子组件 `index.vue` 必须存在且路径匹配 `子路径/index.vue`。
+* 若组件未按路径规则放置，将导致渲染失败。
+* 该工具假设页面结构为物理目录嵌套，逻辑与文件结构一致。
+
+---
+
+## 常见问题
+
+### 父路由组件未显示内容？
+
+请确认父组件中存在 `<RouterView />`，否则不会渲染子路由。
+
+### 为什么我看到父组件和子组件重复渲染？
+
+请避免在父组件中使用 `redirect` 配置后立即跳转，应在 `App.vue` 或 Layout 层中控制默认展示逻辑。
+
+---
+
+## 开发者支持
+
+* Vue 版本：3.x
+* Vue Router：4.x
+* TypeScript：推荐
+* 构建工具：Vite（必须支持 `import.meta.glob`）
+
+---
+
+## License
+
+MIT © KFL UI
+

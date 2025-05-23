@@ -5,9 +5,7 @@ import '@kfl-ui/theme-chalk/src/index.scss'
 import KflTree from '@kfl-ui/components/tree'
 import KflCheckbox from '@kfl-ui/components/checkbox'
 import KflHtmlPreview from '@kfl-ui/components/html-preview'
-import { createRouterFromGlobs  } from '@kfl-ui/utils/autoRouter'
-import {PageConfig} from "@kfl-ui/utils";
-
+import {createRouterFromGlobs, type PageConfig} from '@kfl-ui/utils/autoRouter'
 
 const app = createApp(App)
 
@@ -23,5 +21,8 @@ const components = import.meta.glob('/src/views/**/index.vue');
 
 const router = createRouterFromGlobs(pages, components);
 
+console.log(router, "router")
+
 app.use(router)
+
 app.mount('#app')
