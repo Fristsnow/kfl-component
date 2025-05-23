@@ -38,7 +38,7 @@ const currentNode = ref<TreeNode | null>(null)
 const treeData = ref<TreeNode[]>([])
 
 const normalizedData = computed(() => {
-  const normalize = (data: TreeNodeData[], parent: TreeNode | null = null): TreeNode[] => {
+  const normalize = (data: TreeNodeData[]): TreeNode[] => {
     return data.map((item) => {
       const children = item[props.props.children || 'children']
       const hasChildren = children && children.length > 0
@@ -55,7 +55,7 @@ const normalizedData = computed(() => {
       }
 
       if (hasChildren) {
-        nodeData.children = normalize(children, nodeData)
+        nodeData.children = normalize(children)
       }
 
       return nodeData

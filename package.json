@@ -1,6 +1,6 @@
 {
-  "name": "kfl-component",
-  "private": true,
+  "name": "kfl-ui",
+  "private": false,
   "workspaces": [
     "packages/*"
   ],
@@ -9,10 +9,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm -C play dev",
-    "devC": "pnpm -C docs dev"
+    "devC": "pnpm -C docs dev",
+    "build": "pnpm -r run build",
+    "publish": "pnpm -r publish --access public"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["vue3", "ui", "components"],
+  "author": "KFirstsnowLucky <https://github.com/Fristsnow>",
   "license": "ISC",
   "packageManager": "pnpm@10.6.2",
   "devDependencies": {
@@ -21,8 +23,8 @@
     "vue": "^3.5.13"
   },
   "dependencies": {
-    "@kfl-vue/components": "workspace:*",
-    "@kfl-vue/theme-chalk": "workspace:*",
-    "@kfl-vue/utils": "workspace:*"
+    "@kfl-vue/components": "workspace:^1.0.0",
+    "@kfl-vue/theme-chalk": "workspace:^1.0.0",
+    "@kfl-vue/utils": "workspace:^1.0.0"
   }
 }

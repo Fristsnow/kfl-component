@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
+import { PropType } from 'vue'
 import { createNamespace } from '@kfl-vue/utils/create'
 import type { TreeNode } from './tree'
 
@@ -63,7 +63,7 @@ const props = defineProps({
 
 const emit = defineEmits(['node-click', 'node-expand', 'check-change'])
 
-const isCurrent = computed(() => false)
+// const isCurrent = computed(() => false)
 
 const handleClick = () => {
     if (!props.node.disabled) {

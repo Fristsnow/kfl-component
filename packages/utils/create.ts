@@ -14,7 +14,7 @@ const createBEM = (prefixName: string) => {
     const em = (element: string = '', modifier: string = '') => element && modifier ? _bem(prefixName, '', element, modifier) : '';
     const bem = (blockSuffix: string = '', element: string = '', modifier: string = '') => blockSuffix && element && modifier ? _bem(prefixName, blockSuffix, element, modifier) : '';
 
-    const is = (name: string, state: boolean | string) => (state ? `is-${name}` : ``)
+    // const is = (name: string, state: boolean | string) => (state ? `is-${name}` : ``)
     return { b, e, m, be, bm, em, bem }
 }
 

@@ -2,7 +2,7 @@
  * @Author: FirstsnowLucky firstsnow1119@163.com
  * @Date: 2025-04-16 15:56:41
  * @LastEditors: FirstsnowLucky firstsnow1119@163.com
- * @LastEditTime: 2025-05-13 11:21:43
+ * @LastEditTime: 2025-05-16 17:57:38
  * @FilePath: \kfl-component\docs\.vitepress\config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -59,6 +59,19 @@ module.exports = {
           text: '特殊组件',
           items: [
             { text: 'html-preview 代码预览', link: '/components/others/html-preview' },
+          ]
+        },
+        {
+          text: 'java工具指南',
+          items: [
+            { text: 'java的迁移工具开发版', link: '/components/kfl-migrate/index' },
+            { text: 'java的迁移工具jar包版', link: '/components/kfl-migrate/jarIndex' },
+          ]
+        },
+        {
+          text: '路由',
+          items: [
+            { text: '自动化路由', link: '/components/router/index' },
           ]
         }
       ]
