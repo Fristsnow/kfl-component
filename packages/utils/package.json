@@ -1,6 +1,6 @@
 {
   "name": "@kfl-ui/utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vue 工具集合，包含自动路由生成器",
   "main": "index.ts",
   "types": "index.ts",
