@@ -36,7 +36,7 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
       // 尝试检测项目中是否存在 tsconfig.json 文件
       // 由于无法直接检测文件系统，我们使用一个间接方法
       // 尝试导入 .ts 文件，如果失败则使用 .js
-      const hasTsFiles = import.meta.glob('/src/**/*.ts', { eager: false })
+      const hasTsFiles = import.meta.glob('src/**/*.ts', { eager: false })
       fileExtension = Object.keys(hasTsFiles).length > 0 ? 'ts' : 'js'
       
       if (debug) {
@@ -55,7 +55,7 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
   }
 
   // 根据检测到的语言构建 glob 模式
-  const pagePattern = `/src/views/**/page.${fileExtension}`
+  const pagePattern = `../views/**/page.${fileExtension}`
   
   if (debug) {
     console.log(`使用路由配置文件模式: ${pagePattern}`)
@@ -65,21 +65,21 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
   let pages: Record<string, PageConfig> = {}
   
   if (fileExtension === 'ts') {
-    pages = import.meta.glob<PageConfig>('/src/views/**/page.ts', {
+    pages = import.meta.glob<PageConfig>('../views/**/page.ts', {
       eager: true,
       import: 'default'
     })
   } else {
-    pages = import.meta.glob<PageConfig>('/src/views/**/page.js', {
+    pages = import.meta.glob<PageConfig>('../views/**/page.js', {
       eager: true,
       import: 'default'
     })
   }
 
-  const components = import.meta.glob('/src/views/**/index.vue')
+  const components = import.meta.glob('../views/**/index.vue')
 
   const normalizePath = (path: string): string => {
-    return path.replace('/src/views', '').replace(`/page.${fileExtension}`, '') || '/'
+    return path.replace('../views', '').replace(`/page.${fileExtension}`, '') || '/'
   }
 
   const getRouteName = (path: string): string => {
@@ -107,8 +107,8 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
     if (config?.children) {
       config.children.forEach(child => {
         const fullChildPath = `${routePath}/${child.path}`
-        const childCompPath = `/src/views${fullChildPath}/index.vue`
-        const childPagePath = `/src/views${fullChildPath}/page.${fileExtension}`
+        const childCompPath = `../views${fullChildPath}/index.vue`
+        const childPagePath = `../views${fullChildPath}/page.${fileExtension}`
         const childConfig = pages[childPagePath] || {}
 
         routeMap[routePath].children?.push({
