@@ -19,25 +19,6 @@ export interface AutoRouterOptions {
 }
 
 /**
- * 判断当前项目是否使用 TypeScript (简单判断)
- */
-function isTypeScriptProject(): boolean {
-  try {
-    // 这里借助 vite 环境变量 __dirname, node fs，或者简单使用 import.meta.glob 扫描 tsconfig.json
-    // 由于前端运行环境不能用 fs，可用简单技巧判断 tsconfig 是否存在
-    // 这里用动态 import 试试看（vite dev 环境生效）
-    // 也可以传入参数由外部调用者决定
-
-    // 这是伪代码，需要在构建时替换或由外部传参决定
-    return Boolean(
-      import.meta.glob('/src/tsconfig.json', { eager: true })
-    )
-  } catch {
-    return false
-  }
-}
-
-/**
  * 创建自动路由（根据项目语言自动选择扫描后缀）
  */
 export function createAutoRouter(options: AutoRouterOptions = {}): Router {
