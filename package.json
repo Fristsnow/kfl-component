@@ -23,8 +23,8 @@
     "vue": "^3.5.13"
   },
   "dependencies": {
-    "@kfl-ui/components": "workspace:^1.0.0",
-    "@kfl-ui/theme-chalk": "workspace:^1.0.0",
-    "@kfl-ui/utils": "workspace:^1.0.0"
+    "@kfl-ui/components": "workspace:^1.0.1",
+    "@kfl-ui/theme-chalk": "workspace:^1.0.1",
+    "@kfl-ui/utils": "workspace:^1.0.1"
   }
 }
