@@ -36,7 +36,7 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
       // 尝试检测项目中是否存在 tsconfig.json 文件
       // 由于无法直接检测文件系统，我们使用一个间接方法
       // 尝试导入 .ts 文件，如果失败则使用 .js
-      const hasTsFiles = import.meta.glob('src/**/*.ts', { eager: false })
+      const hasTsFiles = import.meta.glob('/src/**/*.ts', { eager: false })
       fileExtension = Object.keys(hasTsFiles).length > 0 ? 'ts' : 'js'
       
       if (debug) {

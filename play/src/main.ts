@@ -21,7 +21,7 @@ const app = createApp(App)
 const plugins = [Icon, KflTree, KflCheckbox, KflHtmlPreview]
 
 plugins.forEach((plugin) => app.use(plugin))
-const router = createAutoRouter()
+const router = createAutoRouter({language: 'ts'})
 
 app.use(router)
 app.mount('#app')
