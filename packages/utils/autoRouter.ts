@@ -26,11 +26,16 @@ export function createAutoRouter(options: AutoRouterOptions = {}): Router {
     debug = true
   } = options
 
-  // 必须为静态字符串，vite 不支持动态路径
-  const pages = import.meta.glob<PageConfig>('/src/views/**/page.ts', {
-    eager: true,
-    import: 'default'
-  })
+  // // 必须为静态字符串，vite 不支持动态路径
+  // const pages = import.meta.glob<PageConfig>('/src/views/**/page.ts', {
+  //   eager: true,
+  //   import: 'default'
+  // })
+  // 同时扫描 .js 和 .ts 文件
+  const pages = import.meta.glob<PageConfig>(
+    ['/src/views/**/page.ts', '/src/views/**/page.js'],
+    { eager: true, import: 'default' }
+  );
 
   const components = import.meta.glob('/src/views/**/index.vue')
 
